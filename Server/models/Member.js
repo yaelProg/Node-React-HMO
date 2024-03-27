@@ -25,11 +25,11 @@ const MemberSchema = new mongoose.Schema({
     },
     phone:{
         type:String,
-        match:/[0-9]{9}/
+        // match:/[0-9]{9}/
     },
     cell_phone:{
         type:String,
-                match:/[0-9]{10}/
+                // match:/[0-9]{10}/
 
     },
     img_url:{

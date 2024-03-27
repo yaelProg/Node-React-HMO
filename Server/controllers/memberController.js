@@ -4,6 +4,7 @@ const Vaccine = require("../models/Vaccine")
 
 
 const getAllMembers = async (req, res) => {
+    debugger
     const members = await Member.find().lean()
     if(!members?.length)
         return res.status(400).json({message: 'No members found'})    
