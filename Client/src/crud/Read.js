@@ -1,10 +1,9 @@
 import React from "react";
 import useAxios from 'axios-hooks'
 import { useDispatch } from 'react-redux';
-import { setMember, updateMember } from "../store/MemberSlice";
-import { useEffect, useState } from 'react';
-import { error } from "ajv/dist/vocabularies/applicator/dependencies";
-import MemberSlice from "../store/MemberSlice";
+import { setMember } from "../store/members/MemberSlice";
+import { setCorona } from "../store/coronas/CoronaSlice";
+import { setVaccine } from "../store/vaccines/VaccineSlice";
 
 const Read = ({ page }) => {
 
@@ -24,14 +23,11 @@ const Read = ({ page }) => {
     case 'members':
       dispatch(setMember({ data, refetch }))
       break;
-    case 'users':
-      // dispatch(setMember({data, refetch}))   
+    case `coronas`:
+      dispatch(setCorona({ data, refetch }))
       break;
-    case 'posts':
-      // dispatch(setMember({data, refetch}))   
-      break;
-    case 'photos':
-      // dispatch(setMember({data, refetch}))   
+    case 'vaccines':
+      dispatch(setVaccine({data, refetch}))   
       break;
     default:
       break;

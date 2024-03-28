@@ -1,23 +1,23 @@
+
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Delete from "../crud/Delete";
-import Edit from "../crud/Edit";
-import View from "../crud/View";
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import Edit from "../components/Edit";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import UseHttp from '../crud/UseHttp';
+import Read from '../crud/Read';
 
-const MemberDesign = ({ member, refetch }) => {
- 
-  const [openDialog, setOpenDialog] = React.useState(false)
+const MemberDesign = ({ member }) => {
+  const [openDialogEdit, setOpenDialogEdit] = React.useState(false)
   const [confirmDelete, setConfirmDelete] = React.useState(false);
+  const { Delete } = UseHttp()
 
   const handleDeleteClick = () => {
     setConfirmDelete(true);
@@ -25,7 +25,7 @@ const MemberDesign = ({ member, refetch }) => {
 
   const handleDeleteConfirm = () => {
     setConfirmDelete(false);
-    Delete(`members/${member._id}`);
+    Delete(`members/${member._id}`)
   };
 
   const handleDeleteCancel = () => {
@@ -40,20 +40,16 @@ const MemberDesign = ({ member, refetch }) => {
       </div>
 
       <div>
-        <Fab color="primary" aria-label="edit" onClick={() => setOpenDialog(true)} style={{ marginRight: '10px' }}>
+        <Fab color="primary" aria-label="edit" onClick={() => setOpenDialogEdit(true)} style={{ marginRight: '10px' }}>
           <EditIcon />
-          {openDialog && <Edit saveAction={"update"} member={member} />}
-        </Fab>
-
-        <Fab color="primary" aria-label="view" onClick={() => setOpenDialog(true)} style={{ marginRight: '10px' }}>
-          <VisibilityIcon />
-          {openDialog && <View member={member} />}
         </Fab>
 
         <Fab color="secondary" aria-label="delete" onClick={handleDeleteClick}>
           <DeleteIcon />
         </Fab>
       </div>
+
+      <Edit saveAction={"update"} member={member} open={openDialogEdit} setOpen={setOpenDialogEdit} />
 
       <Dialog open={confirmDelete} onClose={handleDeleteCancel}>
         <DialogTitle>Confirm Delete</DialogTitle>
