@@ -27,14 +27,9 @@ const Members = () => {
                 Add Member
             </Button>
 
-            <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-                <DialogContent>
-                    <Edit saveAction="create" member={emptyMember} />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-                </DialogActions>
-            </Dialog>
+            </Button>
+
+                {openDialog && <Edit saveAction="create" member={emptyMember} />}
         </div>
     )
 };
