@@ -27,8 +27,6 @@ const Members = () => {
                 Add Member
             </Button>
 
-            </Button>
-
                 {openDialog && <Edit saveAction="create" member={emptyMember} />}
         </div>
     )
