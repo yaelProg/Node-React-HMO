@@ -12,22 +12,26 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import UseHttp from '../crud/UseHttp';
-import Read from '../crud/Read';
 
+// Component for displaying a member's details with options to edit or delete.
 const MemberDesign = ({ member }) => {
+  // State hooks for managing dialog visibility and delete confirmation
   const [openDialogEdit, setOpenDialogEdit] = React.useState(false)
   const [confirmDelete, setConfirmDelete] = React.useState(false);
   const { Delete } = UseHttp()
 
+  // Handler function to open the delete confirmation dialog.
   const handleDeleteClick = () => {
     setConfirmDelete(true);
   };
 
+  // Handler function to confirm member deletion and send a delete request.
   const handleDeleteConfirm = () => {
     setConfirmDelete(false);
     Delete(`members/${member._id}`)
   };
 
+  // Handler function to cancel member deletion.
   const handleDeleteCancel = () => {
     setConfirmDelete(false);
   };
@@ -35,22 +39,25 @@ const MemberDesign = ({ member }) => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: '10px', border: '1px solid #ccc', borderRadius: '5px', marginBottom: '10px' }}>
       <div>
+        {/* Display member name and ID */}
         <p>Name: {member.first_name} {member.last_name}</p>
         <p>ID: {member.id}</p>
       </div>
 
       <div>
+        {/* Button to open edit dialog */}
         <Fab color="primary" aria-label="edit" onClick={() => setOpenDialogEdit(true)} style={{ marginRight: '10px' }}>
           <EditIcon />
         </Fab>
-
+        {/* Button to open delete confirmation dialog */}
         <Fab color="secondary" aria-label="delete" onClick={handleDeleteClick}>
           <DeleteIcon />
         </Fab>
       </div>
-
+      {/* Edit dialog */}
       <Edit saveAction={"update"} member={member} open={openDialogEdit} setOpen={setOpenDialogEdit} />
 
+      {/* Delete confirmation dialog */}
       <Dialog open={confirmDelete} onClose={handleDeleteCancel}>
         <DialogTitle>Confirm Delete</DialogTitle>
         <DialogContent>

@@ -1,6 +1,4 @@
-// import logo from './logo.svg';
-import {Route,Routes} from 'react-router'
-import Photos from './pages/Photos';
+// Main component for the application.
 import MemberSlice from './store/members/MemberSlice';
 import CoronaSlice from './store/coronas/CoronaSlice';
 import VaccineSlice from './store/vaccines/VaccineSlice';
@@ -9,7 +7,8 @@ import { configureStore } from '@reduxjs/toolkit';
 import Read from './crud/Read';
 import Members from './pages/Members';
 
-const myStore =configureStore({
+// Configure Redux store with reducers for members, coronas, and vaccines
+const myStore = configureStore({
   reducer:
   {
     MemberSlice,
@@ -17,17 +16,18 @@ const myStore =configureStore({
     VaccineSlice,
   }
 })
+// Main application component
 function App() {
   return (
     <>
-      <Provider store = {myStore}>
-        <Read page ={'members'}/>
-        <Read page ={'coronas'}/>
-        <Read page ={'vaccines'}/>
-          <Members/>
-          {/* <Routes>
-            
-          </Routes> */}
+      {/* Provide the Redux store to the application */}
+      <Provider store={myStore}>
+        {/* Render components to read member, corona, and vaccine data */}
+        <Read page={'members'} />
+        <Read page={'coronas'} />
+        <Read page={'vaccines'} />
+        {/* Render the Members page */}
+        <Members />
       </Provider>
     </>
   );
