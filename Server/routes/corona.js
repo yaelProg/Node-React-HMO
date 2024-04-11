@@ -4,6 +4,7 @@ const coronaController = require("../controllers/coronaController")
 
 router.get("/",coronaController.getAllCoronas)
 router.get("/:id", coronaController.getCoronaById)
+router.get("/members/:memberId", coronaController.getCoronaByMemberId)
 router.post("/", coronaController.createNewCorona)
 router.delete("/:id",coronaController.deleteCorona)
 router.put("/",coronaController.updateCorona)

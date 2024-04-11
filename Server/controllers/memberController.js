@@ -6,21 +6,21 @@ const Vaccine = require("../models/Vaccine")
 const getAllMembers = async (req, res) => {
     debugger
     const members = await Member.find().lean()
-    if(!members?.length)
-        return res.status(400).json({message: 'No members found'})    
+    if (!members?.length)
+        return res.status(400).json({ message: 'No members found' })
     res.json(members)
 }
 
 const getMemberById = async (req, res) => {
-    const {id} = req.params
-    try{
-    const member = await Member.findById(id).lean()
-    if(!member)
-        return res.status(400).json({message: 'No such member found'})
-    let coronaData = [];
-    let vaccineData = [];
-    coronaData = await Corona.findOne({ member_id: id }).lean();
-    vaccineData = await Vaccine.find({ member_id: id }).lean();
+    const { id } = req.params
+    try {
+        const member = await Member.findById(id).lean()
+        if (!member)
+            return res.status(400).json({ message: 'No such member found' })
+        let coronaData = [];
+        let vaccineData = [];
+        coronaData = await Corona.findOne({ member_id: id }).lean();
+        vaccineData = await Vaccine.find({ member_id: id }).lean();
 
         res.json({ member, coronaData, vaccineData });
     } catch (error) {
@@ -28,25 +28,32 @@ const getMemberById = async (req, res) => {
         res.status(500).json({ message: 'An error occurred while fetching member data' });
     }
 }
-
 const createNewMember = async (req, res) => {
-    const {first_name, last_name, id, city, street, house_number, birth_date, phone, cell_phone} = req.body
-    if(!id)
-        return res.status(400).json({message: 'Id is required'})
-    const member = await Member.create({first_name, last_name, id, city, street, house_number, birth_date, phone, cell_phone})
-    if(member)
-        return res.status(201).json({message: 'New member created'})
-    else
-        return res.status(400).json({message: 'Invalid member'})
-} 
+    const { first_name, last_name, id, city, street, house_number, birth_date, phone, cell_phone } = req.body;
+    if (!id) {
+        return res.status(400).json({ message: 'Id is required' });
+    }
 
+    try {
+        const existingMember = await Member.findOne({ id }).lean();
+        if (existingMember) {
+            return res.status(400).json({ message: 'Member with the same ID already exists' });
+        }
+
+        const member = await Member.create({ first_name, last_name, id, city, street, house_number, birth_date, phone, cell_phone });
+        return res.status(201).json({ message: 'New member created', member });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'An error occurred while creating member' });
+    }
+};
 const updateMember = async (req, res) => {
-    const {_id, first_name, last_name, id, city, street, house_number, birth_date, phone, cell_phonee} = req.body
-    if(!_id || !id)
-        return res.status(400).json({message: 'Fields are required'})
+    const { _id, first_name, last_name, id, city, street, house_number, birth_date, phone, cell_phonee } = req.body
+    if (!_id || !id)
+        return res.status(400).json({ message: 'Fields are required' })
     const member = await Member.findById(_id).exec()
-    if(!member)
-        return res.status(400).json({message: 'Member not found'})
+    if (!member)
+        return res.status(400).json({ message: 'Member not found' })
     member.first_name = first_name
     member.last_name = last_name
     member.id = id
@@ -60,9 +67,9 @@ const updateMember = async (req, res) => {
     res.json(`'${updateMember.first_name} ${updateMember.last_name}' updated successfully`)
 }
 
-    // const result = await Member.deleteOne()
-    // const reply = `Member: ${member.first_name} ${member.first_name}, ID: ${member.id} deleted successfully`
-    // res.json(reply)
+// const result = await Member.deleteOne()
+// const reply = `Member: ${member.first_name} ${member.first_name}, ID: ${member.id} deleted successfully`
+// res.json(reply)
 
 
 const deleteMember = async (req, res) => {
@@ -84,4 +91,4 @@ const deleteMember = async (req, res) => {
     }
 }
 
-module.exports = {getAllMembers, getMemberById, createNewMember, updateMember, deleteMember}
+module.exports = { getAllMembers, getMemberById, createNewMember, updateMember, deleteMember }

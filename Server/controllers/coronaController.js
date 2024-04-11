@@ -20,6 +20,19 @@ const getCoronaById = async (req, res) => {
         return res.status(400).json({message: 'No corona found'})
     }    
 }
+const getCoronaByMemberId = async (req, res) => {
+    const  {memberId}  = req.params;
+    try {
+        const corona = await Corona.findOne({member_id: memberId}).lean()
+    if(!corona)
+        return res.status(400).json({message: 'The member did not get corona'})
+    return res.json(corona)
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'An error occurred while fetching corona data' });
+    }
+}
 
 const createNewCorona = async (req, res) => {
     const {member_id, positive_result_date, recovery_date} = req.body
@@ -66,5 +79,5 @@ const deleteCorona = async (req, res) => {
     res.json(reply)
 }
 
-module.exports = {getAllCoronas, getCoronaById, createNewCorona, updateCorona, deleteCorona}
+module.exports = {getAllCoronas, getCoronaById, getCoronaByMemberId, createNewCorona, updateCorona, deleteCorona}
 

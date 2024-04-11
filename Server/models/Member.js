@@ -9,6 +9,7 @@ const MemberSchema = new mongoose.Schema({
     id:{
         type:String,
         unique: true,
+        match: /[0-9]{9}/,
         required:true
     },
     city:{
